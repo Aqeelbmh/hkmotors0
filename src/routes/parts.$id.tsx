@@ -86,7 +86,7 @@ function PartDetail() {
               <div className="mt-6">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Compatible Vehicles</h3>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {part.compatible.map((slug) => {
+                  {part.compatible.map((slug: string) => {
                     const v = findVehicle(slug);
                     if (!v) return null;
                     return (
@@ -131,7 +131,7 @@ function PartDetail() {
               <div className="mt-4 overflow-hidden rounded-lg border border-border">
                 <table className="w-full text-sm">
                   <tbody>
-                    {part.specs.map((s, i) => (
+                    {part.specs.map((s: { label: string; value: string }, i: number) => (
                       <tr key={s.label} className={i % 2 === 0 ? "bg-surface" : "bg-card"}>
                         <td className="px-4 py-3 font-medium text-muted-foreground w-1/3">{s.label}</td>
                         <td className="px-4 py-3 text-foreground">{s.value}</td>
@@ -159,7 +159,7 @@ function PartDetail() {
             <div className="mt-16">
               <h2 className="font-display text-2xl font-bold text-foreground">Related Parts</h2>
               <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {related.map((p) => <PartCard key={p.id} part={p} />)}
+                {related.map((p: typeof related[number]) => <PartCard key={p.id} part={p} />)}
               </div>
             </div>
           )}

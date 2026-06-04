@@ -61,7 +61,7 @@ function VehicleDetail() {
             </div>
           ) : (
             <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {parts.map((p) => <PartCard key={p.id} part={p} />)}
+              {parts.map((p: typeof parts[number]) => <PartCard key={p.id} part={p} />)}
             </div>
           )}
         </div>
