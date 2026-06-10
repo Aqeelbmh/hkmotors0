@@ -1,8 +1,9 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Force-enable nitro to ensure the Vercel deployment plugin is active
+  nitro: true,
   tanstackStart: {
-    // This tells Nitro to build specifically for Vercel's Serverless functions
     server: { entry: "server" },
   },
 });
