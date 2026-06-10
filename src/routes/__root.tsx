@@ -11,9 +11,11 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SITE } from "../lib/site";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { LanguageProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -67,12 +69,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "H.K. Motors — Genuine & Quality Spare Parts in Sri Lanka" },
-      { name: "description", content: "Trusted Sri Lankan supplier of genuine and aftermarket spare parts for Tata, Mahindra, Maruti, Nissan, Mitsubishi, Isuzu and Mazda vehicles." },
-      { name: "author", content: "H.K. Motors" },
-      { property: "og:site_name", content: "H.K. Motors" },
+      { title: `${SITE.name} — Genuine & Quality Spare Parts in Sri Lanka` },
+      { name: "description", content: SITE.description },
+      { name: "keywords", content: SITE.keywords },
+      { name: "author", content: SITE.name },
+      { name: "robots", content: "index, follow" },
+      { property: "og:site_name", content: SITE.name },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE.url },
+      { property: "og:image", content: SITE.url + SITE.ogImage },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: SITE.twitterHandle },
+      { name: "twitter:image", content: SITE.url + SITE.ogImage },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -106,14 +114,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col bg-background">
-        <Header />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-        <WhatsAppButton />
-      </div>
+      <LanguageProvider>
+        <div className="flex min-h-screen flex-col bg-background">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+          <WhatsAppButton />
+        </div>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

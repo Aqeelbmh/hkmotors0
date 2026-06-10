@@ -80,22 +80,34 @@
   --border: oklch(0.9 0.01 255);
   --input: oklch(0.92 0.01 255);
   --ring: oklch(0.71 0.18 47);
+
+  /* Premium Accents */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --premium-gradient: linear-gradient(135deg, oklch(0.21 0.04 260) 0%, oklch(0.28 0.035 258) 100%);
+  --accent-gradient: linear-gradient(135deg, oklch(0.71 0.18 47) 0%, oklch(0.6 0.24 27) 100%);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
     font-weight: 700;
@@ -107,6 +119,7 @@
   width: 100%;
   max-width: 80rem;
   padding-inline: 1rem;
+
   @media (min-width: 768px) {
     padding-inline: 2rem;
   }
@@ -114,15 +127,56 @@
 
 @utility section-y {
   padding-block: 4rem;
+
   @media (min-width: 768px) {
     padding-block: 6rem;
   }
 }
 
 @utility diagonal-stripes {
-  background-image: repeating-linear-gradient(
-    135deg,
-    color-mix(in oklch, var(--accent) 12%, transparent) 0 8px,
-    transparent 8px 16px
-  );
+  background-image: repeating-linear-gradient(135deg,
+      color-mix(in oklch, var(--accent) 12%, transparent) 0 8px,
+      transparent 8px 16px);
+}
+
+@utility glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+@utility premium-shadow {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+@keyframes bounce-slow {
+
+  0%,
+  100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

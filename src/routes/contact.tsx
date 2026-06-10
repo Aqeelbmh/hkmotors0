@@ -1,20 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { MapPin, Phone, Mail, Clock, MessageCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageCircle, AlertTriangle, CheckCircle2, UserCheck, ShieldCheck, Headphones } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
+import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact H.K. Motors — Sri Lanka Spare Parts Supplier" },
-      { name: "description", content: "Get in touch with H.K. Motors for spare parts enquiries. WhatsApp, phone or visit our Colombo branch. We respond within hours." },
-      { property: "og:title", content: "Contact H.K. Motors" },
-      { property: "og:description", content: "Phone, WhatsApp, email and location for H.K. Motors Sri Lanka." },
-      { property: "og:url", content: "/contact" },
+      { title: `Connect with Specialists — ${SITE.name} Technical Support` },
+      { name: "description", content: `Get expert automotive advice and rapid component sourcing from the ${SITE.name} specialist team. Direct support for Tata, Mahindra, and Maruti parts.` },
+      { property: "og:title", content: `Contact ${SITE.name} — Expert Automotive Support` },
+      { property: "og:description", content: `Our technical specialists are standing by to ensure you find the exact component for your vehicle. Reach out via WhatsApp or phone.` },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
   }),
   component: ContactPage,
 });
@@ -30,6 +31,7 @@ const schema = z.object({
 type FormState = z.infer<typeof schema>;
 
 function ContactPage() {
+  const { t } = useI18n();
   const [form, setForm] = useState<FormState>({ name: "", phone: "", vehicle: "", partName: "", partNumber: "", message: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -48,8 +50,7 @@ function ContactPage() {
       return;
     }
     setErrors({});
-    // Compose WhatsApp message
-    const msg = `Hello H.K. Motors,\n\nName: ${form.name}\nPhone: ${form.phone}\nVehicle: ${form.vehicle}${form.partName ? `\nPart: ${form.partName}` : ""}${form.partNumber ? `\nPart No: ${form.partNumber}` : ""}\n\n${form.message}`;
+    const msg = `Hello HK Motors Specialist,\n\nName: ${form.name}\nPhone: ${form.phone}\nVehicle: ${form.vehicle}${form.partName ? `\nPart: ${form.partName}` : ""}${form.partNumber ? `\nPart No: ${form.partNumber}` : ""}\n\n${form.message}`;
     window.open(whatsappLink(msg), "_blank", "noopener");
     setSubmitted(true);
   };
@@ -57,100 +58,130 @@ function ContactPage() {
   return (
     <>
       <PageHero
-        title="Get in touch"
-        subtitle="Have a question or need a part sourced? Send us a message — we typically respond within a few hours during business hours."
-        crumbs={[{ label: "Home", to: "/" }, { label: "Contact" }]}
+        title={t("contact_title")}
+        subtitle={t("contact_subtitle")}
+        crumbs={[{ label: t("nav_home"), to: "/" }, { label: t("nav_support") }]}
       />
 
       <section className="section-y">
-        <div className="container-page grid lg:grid-cols-[1.2fr_1fr] gap-10">
+        <div className="container-page grid lg:grid-cols-[1.3fr_1fr] gap-16">
           {/* Form */}
-          <div className="rounded-lg border border-border bg-card p-6 md:p-8">
-            <h2 className="font-display text-2xl font-bold text-foreground">Send an enquiry</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Fill in your details and we'll get back to you with availability and pricing.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-[2.5rem] border border-border bg-card p-8 lg:p-12 shadow-2xl shadow-primary/5"
+          >
+            <div className="max-w-xl">
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent block mb-4">Direct Enquiry</span>
+              <h2 className="font-display text-3xl font-bold text-foreground">{t("contact_title")}</h2>
+              <p className="mt-4 text-muted-foreground font-light leading-relaxed">{t("contact_subtitle")}</p>
+            </div>
 
             {submitted ? (
-              <div className="mt-6 rounded-md border border-success/40 bg-success/10 p-5 text-sm">
-                <div className="flex items-center gap-2 text-success font-semibold"><CheckCircle2 className="h-5 w-5" /> Enquiry ready to send</div>
-                <p className="mt-2 text-foreground/80">Your WhatsApp should have opened with your enquiry pre-filled. Press send to message us.</p>
-                <button onClick={() => setSubmitted(false)} className="mt-3 text-accent font-semibold hover:underline text-sm">Send another enquiry</button>
-              </div>
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="mt-10 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center"
+              >
+                <CheckCircle2 className="h-16 w-16 text-emerald-500 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-foreground">Enquiry Transmitted</h3>
+                <p className="mt-2 text-muted-foreground">Your request is being processed. Our WhatsApp specialist has been notified.</p>
+                <button onClick={() => setSubmitted(false)} className="mt-8 font-bold text-accent hover:underline uppercase tracking-widest text-xs">Send another request</button>
+              </motion.div>
             ) : (
-              <form onSubmit={submit} noValidate className="mt-6 grid sm:grid-cols-2 gap-4">
-                <Field label="Your Name *" error={errors.name}>
-                  <input value={form.name} onChange={update("name")} className={inputCls(errors.name)} placeholder="Saman Perera" />
+              <form onSubmit={submit} noValidate className="mt-12 grid sm:grid-cols-2 gap-8">
+                <Field label="Your Name" error={errors.name}>
+                  <input value={form.name} onChange={update("name")} className={inputCls(errors.name)} placeholder="Full Name" />
                 </Field>
-                <Field label="Phone Number *" error={errors.phone}>
-                  <input value={form.phone} onChange={update("phone")} className={inputCls(errors.phone)} placeholder="+94 77 123 4567" />
+                <Field label="Direct Line" error={errors.phone}>
+                  <input value={form.phone} onChange={update("phone")} className={inputCls(errors.phone)} placeholder="+94 XX XXX XXXX" />
                 </Field>
-                <Field label="Vehicle Model *" error={errors.vehicle}>
-                  <input value={form.vehicle} onChange={update("vehicle")} className={inputCls(errors.vehicle)} placeholder="e.g. Tata Ace 2018" />
+                <Field label="Vehicle Model & Year" error={errors.vehicle}>
+                  <input value={form.vehicle} onChange={update("vehicle")} className={inputCls(errors.vehicle)} placeholder="e.g. Tata Ace (2021)" />
                 </Field>
-                <Field label="Part Name" error={errors.partName}>
-                  <input value={form.partName} onChange={update("partName")} className={inputCls(errors.partName)} placeholder="e.g. Clutch Plate" />
+                <Field label="Required Component" error={errors.partName}>
+                  <input value={form.partName} onChange={update("partName")} className={inputCls(errors.partName)} placeholder="e.g. Turbocharger Unit" />
                 </Field>
-                <Field label="Part Number" error={errors.partNumber} className="sm:col-span-2">
-                  <input value={form.partNumber} onChange={update("partNumber")} className={inputCls(errors.partNumber)} placeholder="If known — e.g. HK-CL-2410" />
+                <Field label="Part Serial Number (Optional)" error={errors.partNumber} className="sm:col-span-2">
+                  <input value={form.partNumber} onChange={update("partNumber")} className={inputCls(errors.partNumber)} placeholder="Enter OEM number if available" />
                 </Field>
-                <Field label="Message *" error={errors.message} className="sm:col-span-2">
-                  <textarea value={form.message} onChange={update("message")} rows={4} className={inputCls(errors.message)} placeholder="Tell us what you're looking for…" />
+                <Field label="Detailed Requirements" error={errors.message} className="sm:col-span-2">
+                  <textarea value={form.message} onChange={update("message")} rows={4} className={inputCls(errors.message)} placeholder="Specific details regarding symptoms or requirements…" />
                 </Field>
-                <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
-                  <button type="submit" className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90">
-                    <MessageCircle className="h-4 w-4" /> Send via WhatsApp
+                <div className="sm:col-span-2 pt-4">
+                  <button type="submit" className="w-full flex items-center justify-center gap-3 rounded-2xl bg-primary px-8 py-5 text-sm font-bold uppercase tracking-widest text-white hover:bg-black transition-all shadow-xl shadow-black/10">
+                    <MessageCircle className="h-5 w-5" /> Secure Secure via WhatsApp
                   </button>
-                  <span className="text-xs text-muted-foreground">By submitting you agree to be contacted regarding your enquiry.</span>
+                  <p className="mt-4 text-[10px] text-center uppercase tracking-widest font-bold text-muted-foreground/50">Confidentiality Assured • Rapid Response Guaranteed</p>
                 </div>
               </form>
             )}
-          </div>
+          </motion.div>
 
-          {/* Info */}
-          <div className="space-y-5">
-            <InfoCard icon={MapPin} title="Visit Our Branch">
-              {SITE.address}<br /><span className="text-muted-foreground">Free parking available</span>
-            </InfoCard>
-            <InfoCard icon={Phone} title="Call Us">
-              <a href={SITE.phoneHref} className="hover:text-accent">{SITE.phone}</a><br />
-              <span className="text-muted-foreground">Mon–Sat, business hours</span>
-            </InfoCard>
-            <InfoCard icon={MessageCircle} title="WhatsApp">
-              <a href={whatsappLink()} target="_blank" rel="noopener" className="hover:text-accent">Chat with our parts team</a><br />
-              <span className="text-muted-foreground">Fastest way to reach us</span>
-            </InfoCard>
-            <InfoCard icon={Mail} title="Email">
-              <a href={`mailto:${SITE.email}`} className="hover:text-accent">{SITE.email}</a>
-            </InfoCard>
-            <InfoCard icon={Clock} title="Business Hours">
-              {SITE.hours.map((h) => (
-                <div key={h.day} className="flex justify-between text-sm">
-                  <span>{h.day}</span>
-                  <span className="text-muted-foreground">{h.time}</span>
+          {/* Info & Humanization */}
+          <div className="space-y-8">
+            <div className="grid gap-6">
+              <InfoCard icon={Headphones} title="Expert Consultation">
+                <p className="leading-relaxed">Speak directly with our senior parts analysts. We offer technical guidance, not just sales.</p>
+                <div className="mt-4 flex flex-col gap-2">
+                  {SITE.phoneNumbers.map((num) => (
+                    <a key={num} href={`tel:${num.replace(/\s+/g, "")}`} className="flex items-center gap-2 font-black text-primary hover:text-accent transition-colors">
+                      <Phone className="h-3 w-3" /> {num}
+                    </a>
+                  ))}
                 </div>
-              ))}
-            </InfoCard>
+              </InfoCard>
 
-            <div className="rounded-lg border border-accent/30 bg-accent/5 p-5">
-              <div className="flex items-center gap-2 text-accent font-display font-bold">
-                <AlertTriangle className="h-5 w-5" /> Emergency / After-Hours
+              <InfoCard icon={MapPin} title="The Hub">
+                <p className="leading-relaxed">{SITE.address}</p>
+                <span className="mt-2 block text-[11px] font-bold uppercase tracking-wider text-accent italic">Logistics Center & Showroom</span>
+              </InfoCard>
+
+              <InfoCard icon={ShieldCheck} title="Service Integrity">
+                <div className="space-y-4">
+                  {SITE.hours.map((h) => (
+                    <div key={h.day} className="flex justify-between items-center text-xs">
+                      <span className="font-bold text-muted-foreground">{h.day}</span>
+                      <span className="text-foreground font-medium">{h.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </InfoCard>
+            </div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="rounded-3xl bg-accent p-8 text-white shadow-2xl shadow-accent/20 border-l-8 border-white/20"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <AlertTriangle className="h-6 w-6" />
+                <h3 className="font-display text-xl font-bold uppercase tracking-widest">Fleet Emergency?</h3>
               </div>
-              <p className="mt-2 text-sm text-foreground/80">
-                For urgent breakdowns or commercial fleet emergencies outside business hours, call our after-hours line.
+              <p className="text-sm font-medium opacity-90 leading-relaxed">
+                Logistics downtime is costly. For critical fleet failures outside standard hours, our priority response line is open.
               </p>
-              <a href={SITE.phoneHref} className="mt-3 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-secondary">
-                <Phone className="h-4 w-4" /> Call Emergency Line
+              <a href={SITE.phoneHref} className="mt-6 inline-flex items-center gap-3 rounded-xl bg-white px-6 py-3 text-xs font-black text-accent uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                Critical Support Call
               </a>
+            </motion.div>
+
+            <div className="p-8 rounded-3xl border border-border bg-surface text-center">
+              <UserCheck className="h-10 w-10 text-primary/40 mx-auto mb-4" />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Certified Parts Specialist</p>
+              <p className="mt-2 text-sm font-medium italic">"We don't just sell parts; we restore confidence in your vehicle's capability."</p>
             </div>
           </div>
         </div>
 
-        {/* Map */}
-        <div className="container-page mt-12">
-          <div className="rounded-lg overflow-hidden border border-border bg-surface aspect-[16/6] relative">
+        {/* Map Modernized */}
+        <div className="container-page mt-24">
+          <div className="group relative rounded-[3rem] overflow-hidden border border-border bg-surface aspect-[16/6] shadow-2xl">
+            <div className="absolute inset-0 bg-primary/5 group-hover:opacity-0 transition-opacity z-10 pointer-events-none" />
             <iframe
-              title="H.K. Motors Location"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=79.84%2C6.87%2C79.88%2C6.91&layer=mapnik&marker=6.89%2C79.86"
-              className="h-full w-full"
+              title="HK Motors Gunnepana HQ"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent("41/2 Yakgahapitiya - Amunugama Road, Gunnepana 20270")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+              className="h-full w-full grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000 border-none"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
@@ -162,28 +193,31 @@ function ContactPage() {
 }
 
 const inputCls = (err?: string) =>
-  `w-full rounded-md border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent ${err ? "border-destructive" : "border-border"}`;
+  cn(
+    "w-full rounded-2xl border bg-background px-5 py-4 text-sm transition-all focus:outline-none focus:ring-4 placeholder:text-muted-foreground/50",
+    err ? "border-destructive focus:ring-destructive/10" : "border-border focus:border-accent focus:ring-accent/10"
+  );
 
 function Field({ label, error, children, className = "" }: { label: string; error?: string; children: React.ReactNode; className?: string }) {
   return (
-    <label className={`block ${className}`}>
-      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
-      <div className="mt-1.5">{children}</div>
-      {error && <span className="mt-1 block text-xs text-destructive">{error}</span>}
-    </label>
+    <div className={cn("flex flex-col gap-2", className)}>
+      <span className="text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground/60 px-1">{label}</span>
+      {children}
+      {error && <span className="text-[10px] font-bold text-destructive px-1">{error}</span>}
+    </div>
   );
 }
 
 function InfoCard({ icon: Icon, title, children }: { icon: React.ComponentType<{ className?: string }>; title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
-      <div className="flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-md bg-primary text-primary-foreground">
-          <Icon className="h-5 w-5" />
-        </span>
-        <h3 className="font-display text-lg font-bold text-foreground">{title}</h3>
+    <div className="rounded-3xl border border-border bg-card p-8 group hover:border-accent/30 transition-all">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary text-primary-foreground group-hover:bg-accent transition-colors duration-500">
+          <Icon className="h-6 w-6" />
+        </div>
+        <h3 className="font-display text-xl font-bold text-foreground">{title}</h3>
       </div>
-      <div className="mt-3 text-sm text-foreground/85">{children}</div>
+      <div className="text-sm font-light text-muted-foreground leading-relaxed">{children}</div>
     </div>
   );
 }

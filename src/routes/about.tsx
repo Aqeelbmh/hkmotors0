@@ -1,166 +1,218 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Award, Users, Truck, Target, Eye } from "lucide-react";
+import { SITE } from "@/lib/site";
+import { CheckCircle2, Award, Users, Truck, Target, Eye, ShieldCheck, Heart, Sparkles, ArrowRight, Wrench } from "lucide-react";
 import warehouseImg from "@/assets/about-warehouse.jpg";
 import { PageHero } from "@/components/PageHero";
+import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us — H.K. Motors | Sri Lankan Spare Parts Supplier" },
-      { name: "description", content: "Learn about H.K. Motors — Sri Lanka's trusted spare parts dealer with over 15 years of experience serving fleet operators, workshops and vehicle owners." },
-      { property: "og:title", content: "About H.K. Motors" },
-      { property: "og:description", content: "15+ years of automotive spare parts experience in Sri Lanka." },
-      { property: "og:url", content: "/about" },
+      { title: `Our Story — ${SITE.name} Automotive Excellence` },
+      { name: "description", content: `Learn about ${SITE.name} — Sri Lanka's premium spare parts destination with a heritage of engineering trust and performance since 2008.` },
+      { property: "og:title", content: `Our Story — ${SITE.name} Automotive Excellence` },
+      { property: "og:description", content: `A legacy built on grease, grit, and genuine integrity serving the Sri Lankan automotive landscape for over 15 years.` },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
   }),
   component: AboutPage,
 });
 
 const timeline = [
-  { year: "2008", title: "H.K. Motors founded", desc: "Started as a small spare parts shop in Colombo serving Tata Ace owners." },
-  { year: "2012", title: "Expanded to commercial fleet", desc: "Became a trusted supplier for delivery and logistics businesses across the Western Province." },
-  { year: "2016", title: "Mahindra & Maruti range added", desc: "Diversified inventory to include passenger vehicles and SUV parts." },
-  { year: "2020", title: "Island-wide delivery", desc: "Partnered with national couriers to deliver parts to every district in Sri Lanka." },
-  { year: "2024", title: "Online catalogue launched", desc: "Brought our 1000+ part inventory online — making it easy to find and enquire instantly." },
+  { year: "2008", title: "Genesis in Colombo", desc: "Founded with a singular vision: to revolutionize the accessibility of genuine Tata components." },
+  { year: "2012", title: "Fleet Dominance", desc: "Transformed into the primary logistical backbone for thousands of delivery operations nationwide." },
+  { year: "2016", title: "Brand Diversification", desc: "Integrated global automotive giants including Mahindra, Maruti, and Nissan into our curated portfolio." },
+  { year: "2020", title: "Digital Logistics", desc: "Pioneered a rapid-response island-wide distribution network to serve remote regions." },
+  { year: "2024", title: "Automated Excellence", desc: "Launching high-tech inventory management to deliver instant quotes and unmatched precision." },
 ];
 
 const stats = [
-  { value: "15+", label: "Years in business" },
-  { value: "1000+", label: "Parts in inventory" },
-  { value: "11", label: "Vehicle brands" },
-  { value: "5000+", label: "Happy customers" },
+  { value: "15+", label: "Years of Heritage", icon: ShieldCheck },
+  { value: "1.2k+", label: "Product Portfolio", icon: Sparkles },
+  { value: "11", label: "Elite Partners", icon: Award },
+  { value: "5k+", label: "Success Stories", icon: Heart },
 ];
 
-const reasons = [
-  "We stock parts — we don't just list them",
-  "Same-day dispatch for Colombo and suburbs",
-  "Workshops, fleets and walk-in customers all welcome",
-  "Honest advice — we tell you if a cheaper option will do",
-  "Direct WhatsApp line with our parts team",
-  "Returns accepted if part doesn't fit",
+const values = [
+  {
+    title: "Uncompromising Quality",
+    desc: "We don't stock alternatives. We stock solutions. Every part is vetted for OEM precision.",
+    icon: ShieldCheck
+  },
+  {
+    title: "Human Expertise",
+    desc: "Beyond parts numbers, we speak your engine's language. Real humans, real advice.",
+    icon: Users
+  },
+  {
+    title: "Accelerated Support",
+    desc: "Speed is our priority. Rapid dispatch is a commitment, not an option.",
+    icon: Truck
+  }
 ];
 
 function AboutPage() {
+  const { t } = useI18n();
   return (
     <>
       <PageHero
-        title="Sri Lanka's trusted spare parts partner since 2008"
-        subtitle="We're an automotive spare parts business built by people who love vehicles — and who've spent over a decade keeping them on the road."
-        crumbs={[{ label: "Home", to: "/" }, { label: "About" }]}
+        title={t("about_title")}
+        subtitle={t("about_desc")}
+        crumbs={[{ label: t("nav_home"), to: "/" }, { label: t("nav_about") }]}
       />
 
-      {/* Story */}
-      <section className="section-y">
-        <div className="container-page grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-accent">Our Story</span>
-            <h2 className="mt-2 font-display text-3xl md:text-4xl font-bold text-foreground">From a single Tata Ace counter to a national parts supplier</h2>
-            <div className="mt-5 space-y-4 text-foreground/80 leading-relaxed">
-              <p>H.K. Motors began in 2008 as a small spare parts shop in Colombo, started by automotive enthusiasts who had spent years working on Tata commercial vehicles. We knew first-hand how hard it was for owners and mechanics to find the right part at a fair price.</p>
-              <p>Today we supply parts for eleven vehicle brands across Sri Lanka — from the popular Tata Ace and Mahindra Maxximo to passenger cars like the Maruti Alto, Nissan Sunny and Mazda Familia. Our customers range from individual owners to fleet operators running dozens of vehicles.</p>
-              <p>What hasn't changed is the way we work: stock the right parts, give honest advice, and answer the phone when you call.</p>
+      {/* Narrative Section */}
+      <section className="section-y overflow-hidden">
+        <div className="container-page grid lg:grid-cols-2 gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent block mb-6">Our DNA</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">A Legacy Built on Grease, Grit, and Genuine Integrity.</h2>
+            <div className="mt-8 space-y-6 text-lg text-muted-foreground font-light leading-relaxed">
+              <p>HK Motors wasn't born in a boardroom; it was forged in the workshops of Colombo. Our founders didn't just see parts; they saw the lifelines of businesses and families.</p>
+              <p>Today, while we utilize state-of-the-art logistics and a digital-first approach, our soul remains unchanged. We believe that a vehicle's performance is a reflection of its owner's commitment to quality. That's why we only curate the best.</p>
+              <p className="font-medium text-foreground">Whether you're managing a nationwide logistics fleet or caring for your family's first car, you deserve parts that don't just fit—they perform.</p>
             </div>
-          </div>
-          <div className="relative">
-            <img src={warehouseImg} alt="H.K. Motors warehouse" width={1600} height={1024} loading="lazy" className="rounded-lg w-full aspect-[4/3] object-cover" />
-            <div className="absolute -bottom-6 -left-6 hidden md:block bg-accent text-accent-foreground p-5 rounded-lg shadow-lg">
-              <div className="font-display text-3xl font-bold">15+</div>
-              <div className="text-xs uppercase tracking-widest">Years serving Sri Lanka</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Mission / Vision */}
-      <section className="bg-surface section-y">
-        <div className="container-page grid md:grid-cols-2 gap-6">
-          <div className="rounded-lg border border-border bg-card p-7">
-            <div className="grid h-11 w-11 place-items-center rounded-md bg-primary text-primary-foreground">
-              <Target className="h-5 w-5" />
-            </div>
-            <h3 className="mt-5 font-display text-2xl font-bold text-foreground">Our Mission</h3>
-            <p className="mt-3 text-foreground/75 leading-relaxed">
-              To keep Sri Lankan vehicles running reliably by supplying genuine spare parts at fair prices, backed by honest expert advice and dependable service.
-            </p>
-          </div>
-          <div className="rounded-lg border border-border bg-card p-7">
-            <div className="grid h-11 w-11 place-items-center rounded-md bg-accent text-accent-foreground">
-              <Eye className="h-5 w-5" />
-            </div>
-            <h3 className="mt-5 font-display text-2xl font-bold text-foreground">Our Vision</h3>
-            <p className="mt-3 text-foreground/75 leading-relaxed">
-              To be Sri Lanka's most trusted automotive spare parts brand — the first call every workshop, fleet manager and vehicle owner makes when they need a part.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="section-y">
-        <div className="container-page">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map((s) => (
-              <div key={s.label} className="rounded-lg border border-border bg-card p-6 text-center">
-                <div className="font-display text-4xl font-bold text-accent">{s.value}</div>
-                <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">{s.label}</div>
+            <div className="mt-10 flex gap-12">
+              <div className="flex flex-col">
+                <span className="font-display text-4xl font-black text-primary">15+</span>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">Years Experience</span>
               </div>
+              <div className="flex flex-col">
+                <span className="font-display text-4xl font-black text-accent">100%</span>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">Genuine Parts</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-accent/10 rounded-[2rem] rotate-3 -z-10" />
+            <img
+              src={warehouseImg}
+              alt="Engineers at work"
+              className="rounded-[2rem] shadow-2xl w-full aspect-[4/5] object-cover border-4 border-white"
+            />
+            <div className="absolute -bottom-10 -right-10 bg-primary p-8 rounded-3xl shadow-3xl text-white hidden md:block max-w-[200px]">
+              <Sparkles className="h-8 w-8 text-accent mb-4" />
+              <p className="text-sm font-bold leading-tight">Pioneering automotive standards across Sri Lanka.</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Board */}
+      <section className="bg-primary py-20">
+        <div className="container-page">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="text-center group"
+              >
+                <div className="inline-grid h-16 w-16 place-items-center rounded-2xl bg-white/5 border border-white/10 mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-500">
+                  <s.icon className="h-8 w-8 text-accent group-hover:text-white" />
+                </div>
+                <div className="font-display text-5xl font-black text-white">{s.value}</div>
+                <div className="mt-2 text-[10px] uppercase tracking-[0.25em] font-bold text-white/40">{s.label}</div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Timeline */}
+      {/* Values */}
       <section className="section-y bg-surface">
         <div className="container-page">
-          <div className="max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-widest text-accent">Our Journey</span>
-            <h2 className="mt-2 font-display text-3xl md:text-4xl font-bold text-foreground">15 years of growing with Sri Lanka's auto industry</h2>
+          <div className="max-w-3xl mb-16">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent block mb-4">Our Commitment</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground">The Pillars of HK Motors</h2>
           </div>
-          <div className="mt-12 relative">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />
-            <div className="space-y-10">
-              {timeline.map((t, i) => (
-                <div key={t.year} className={`relative flex gap-6 md:gap-0 md:items-center ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-                  <div className="md:w-1/2 md:px-10">
-                    <div className="rounded-lg border border-border bg-card p-5">
-                      <div className="font-display text-2xl font-bold text-accent">{t.year}</div>
-                      <h3 className="mt-1 font-display text-lg font-bold text-foreground">{t.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">{t.desc}</p>
-                    </div>
-                  </div>
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 grid h-3 w-3 place-items-center rounded-full bg-accent ring-4 ring-surface" />
-                  <div className="hidden md:block md:w-1/2" />
+          <div className="grid md:grid-cols-3 gap-8">
+            {values.map((v, i) => (
+              <motion.div
+                key={v.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-card border border-border p-8 rounded-3xl hover:shadow-2xl hover:shadow-primary/5 transition-all"
+              >
+                <div className="h-12 w-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-6">
+                  <v.icon className="h-6 w-6 text-accent" />
                 </div>
+                <h3 className="font-display text-xl font-bold text-foreground mb-4">{v.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{v.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline - Humanized */}
+      <section className="section-y">
+        <div className="container-page">
+          <div className="max-w-2xl mx-auto text-center mb-20">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent block mb-4">Evolution</span>
+            <h2 className="font-display text-4xl font-bold text-foreground">Growing Alongside Our Nation</h2>
+          </div>
+          <div className="relative">
+            <div className="absolute left-[50%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent hidden md:block" />
+            <div className="space-y-24">
+              {timeline.map((t, i) => (
+                <motion.div
+                  key={t.year}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className={`flex flex-col md:flex-row items-center gap-12 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
+                >
+                  <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
+                    <span className="font-display text-6xl font-black text-accent/20 mb-2">{t.year}</span>
+                    <h3 className="font-display text-2xl font-bold text-foreground mb-4">{t.title}</h3>
+                    <p className="text-muted-foreground font-light max-w-sm">{t.desc}</p>
+                  </div>
+                  <div className="hidden md:flex h-4 w-4 rounded-full bg-accent ring-8 ring-accent/10 z-10" />
+                  <div className="md:w-1/2" />
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why trust us */}
-      <section className="section-y">
+      {/* CTA Humanized */}
+      <section className="section-y pt-0">
         <div className="container-page">
-          <div className="max-w-2xl">
-            <span className="text-xs font-semibold uppercase tracking-widest text-accent">Why Customers Trust Us</span>
-            <h2 className="mt-2 font-display text-3xl md:text-4xl font-bold text-foreground">No upselling. No guesswork. Just the right part.</h2>
-          </div>
-          <div className="mt-10 grid md:grid-cols-2 gap-4">
-            {reasons.map((r) => (
-              <div key={r} className="flex items-start gap-3 rounded-lg border border-border bg-card p-5">
-                <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                <span className="font-medium text-foreground">{r}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 rounded-2xl bg-primary text-primary-foreground p-8 md:p-12 grid md:grid-cols-[1fr_auto] gap-6 items-center">
-            <div>
-              <h3 className="font-display text-2xl md:text-3xl font-bold">Ready to find your part?</h3>
-              <p className="mt-2 text-primary-foreground/75">Browse the catalogue or send us your vehicle details directly.</p>
+          <div className="rounded-[3rem] bg-accent p-12 lg:p-20 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-20 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+              <Wrench className="h-64 w-64 text-white" />
             </div>
-            <div className="flex gap-3">
-              <Link to="/parts" className="inline-flex items-center rounded-md bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent/90">Browse Parts</Link>
-              <Link to="/contact" className="inline-flex items-center rounded-md border border-white/30 bg-white/5 px-5 py-3 text-sm font-semibold hover:bg-white/10">Contact Us</Link>
+            <div className="relative z-10 max-w-2xl">
+              <h2 className="font-display text-5xl font-bold text-accent-foreground leading-tight">Experience Automotive Precision Today.</h2>
+              <p className="mt-6 text-lg text-accent-foreground/80 font-medium">Don't compromise on your vehicle's integrity. Let our experts guide you to the perfect component.</p>
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Link to="/parts" className="inline-flex items-center gap-3 rounded-2xl bg-primary px-8 py-4 text-sm font-bold text-white hover:bg-primary/90 transition-all shadow-xl shadow-black/20">
+                  Browse Inventory <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/contact" className="inline-flex items-center gap-3 rounded-2xl bg-white/20 backdrop-blur-md px-8 py-4 text-sm font-bold text-accent-foreground hover:bg-white/30 transition-all">
+                  Contact Specialist
+                </Link>
+              </div>
             </div>
           </div>
         </div>
